@@ -67,7 +67,9 @@ function doubleArray(arr) {
  *    [-1, 2, -5, -4, 0] => [ 2 ]
  *    [] => []
  */
-function getArrayOfPositives(arr) {}
+function getArrayOfPositives(/* arr/) {
+  throw new Error('Not implemented');
+}
 
 /**
  * Returns the array with strings only in the specified array (in original order)
