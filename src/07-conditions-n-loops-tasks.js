@@ -379,10 +379,21 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
-}
+function getCommonDirectoryPath(pathes) {
+  const pathFirst = pathes[0].split('/');
+  const pathesSplit = pathes.map((element) => element.split('/'));
 
+  let commonDirectory = '';
+
+  for (let indexPF = 0; indexPF < pathFirst.length; indexPF += 1) {
+    for (let indexPS = 0; indexPS < pathesSplit.length; indexPS += 1) {
+      if (pathFirst[indexPF] !== pathesSplit[indexPS][indexPF]) return commonDirectory;
+    }
+    commonDirectory += pathFirst[indexPF] ? `${pathFirst[indexPF]}/` : '/';
+  }
+
+  return commonDirectory;
+}
 
 /**
  * Returns the product of two specified matrixes.
