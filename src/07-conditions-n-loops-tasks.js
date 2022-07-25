@@ -153,8 +153,11 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const dotPoints = (point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2;
+  const radiusPoints = circle.radius ** 2;
+
+  return dotPoints < radiusPoints;
 }
 
 
@@ -169,8 +172,15 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  for (let index = 0; index < str.length; index += 1) {
+    if (
+      str.lastIndexOf(str[index]) === index
+      && str.indexOf(str[index]) === index
+    ) { return str[index]; }
+  }
+
+  return null;
 }
 
 
@@ -196,8 +206,14 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let returnStr = (isStartIncluded) ? '[' : '(';
+  returnStr += Math.min(a, b);
+  returnStr += ', ';
+  returnStr += Math.max(a, b);
+  returnStr += isEndIncluded ? ']' : ')';
+
+  return returnStr;
 }
 
 
@@ -213,8 +229,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -230,8 +246,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return +String(num).split('').reverse().join('');
 }
 
 
@@ -255,8 +271,22 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const ccnArr = ccn.toString().split('').reverse();
+  const newCnnArr = ccnArr.map((element, index) => {
+    if ((index + 1) % 2 === 0) {
+      let newElement = element * 2;
+      if (newElement >= 10) {
+        const newElementStr = String(newElement);
+        newElement = +newElementStr[0] + +newElementStr[1];
+      }
+      return newElement;
+    }
+    return element;
+  });
+  const sumNewCnnArr = newCnnArr.reduce((sum, element) => +sum + +element, 0);
+
+  return sumNewCnnArr % 10 === 0;
 }
 
 /**
@@ -273,10 +303,15 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
-}
+function getDigitalRoot(num) {
+  const numArr = String(num).split('');
+  const numSum = numArr.reduce((element, sum) => +sum + +element, 0);
+  const numSumStr = String(numSum);
 
+  if (numSumStr.length === 1) return numSum;
+  return +numSumStr[0] + +numSumStr[1];
+}
+getDigitalRoot(12345);
 
 /**
  * Returns true if the specified string has the balanced brackets and false otherwise.
@@ -324,8 +359,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -399,8 +434,25 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const checkResult = (a, b, c) => (a === b && a === c ? a : false);
+
+  const crossWin = checkResult(position[0][0], position[1][1], position[2][2]);
+  if (crossWin) return crossWin;
+
+  const crossReversWin = checkResult(position[0][2], position[1][1], position[2][0]);
+  if (crossReversWin) return crossReversWin;
+
+  for (let index = 0; index < 3; index += 1) {
+    const rowWin = checkResult(position[index][0], position[index][1], position[index][2]);
+    if (rowWin) return rowWin;
+
+    const colWin = checkResult(position[0][index], position[1][index], position[2][index]);
+    if (colWin) return colWin;
+  }
+
+
+  return undefined;
 }
 
 
